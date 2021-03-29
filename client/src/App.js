@@ -3,6 +3,7 @@ import { Switch, Route, Router } from 'react-router-dom';
 import LoginForm from './features/LoginForm';
 import Home from './features/Home';
 import Authors from './features/Authors';
+import BookCard from './features/BookCard';
 import Books from './features/Books';
 import React, { Fragment } from 'react';
 import {createBrowserHistory} from 'history';
@@ -30,8 +31,9 @@ function App() {
           <Switch>
             <Route path='/' component={Home} exact />
             <Route path='/login' component={LoginForm} />
-            <Route path='/books' component={Books} />
-            <Route path='/authors' component={Authors} />          
+            <Route path='/books' exact component={Books} />
+            <Route path='/books/:id' component={BookCard} />
+            <Route path='/authors' component={Authors} />
           </Switch>
         </Container>
       </Router >

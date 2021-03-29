@@ -8,6 +8,29 @@ type AuthToken {
     userName: String!
 }
 
+type Author {
+    id: ID!
+    firstName: String!
+    lastName: String!
+}
+
+type Book {
+    id: ID!
+    title: String!
+    description: String!
+    author: Author!
+    comments: [Comment]!
+}
+
+type Comment {
+    id: ID!
+    author: String!
+    text: String!
+}
+
 type Query {
     login(login: String!, password: String!): AuthToken!
+    getAllBooks: [Book]!
+    getAllAuthors: [Author]!
+    getBook(id: ID!): Book!
 }
