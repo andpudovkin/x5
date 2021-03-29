@@ -22,7 +22,19 @@ const allBooks = [
 			id: '1',
 			firstName: 'Alex',
 			lastName: 'Kislov'
-		}
+		},
+		comments: [
+			{
+				id: '1',
+				author: 'Mike',
+				text: 'Like it'
+			},
+			{
+				id: '2',
+				author: 'Alex',
+				text: 'Really awesome book'
+			}
+		]
 	},
 	{
 		id: '2',
@@ -32,7 +44,8 @@ const allBooks = [
 			id: '1',
 			firstName: 'Alex',
 			lastName: 'Kislov'
-		}
+		},
+		comments: []
 	}
 ];
 
@@ -45,7 +58,18 @@ const root = {
 		if (args.login === LOGIN && args.password === PASSWORD)
 			return {token:TOKEN, userName:'admin'};
 		else
-			return error();
+			return error({message: 'Unauthorized error', statusCode: 401});
+	},
+	getAllBooks: () => {
+		return allBooks;
+	},
+	getAllAuthors: () => {
+		return allBooks
+			.map((item) => item.author)
+			.filter((item, i, self) => self.findIndex((selfItem) => selfItem.id === item.id) === i);
+	},
+	getBook: (params) => {
+		return allBooks.find((item) => item.id === params.id);
 	}
 };
 
@@ -60,7 +84,7 @@ app.use(
 		rootValue: root,
 		graphiql: true,
 		formatError: (err) => {
-			return ({message: 'Unauthorized error', statusCode: 401})
+			return ({message: err.message, statusCode: err.statusCode})
 		}
 	})
 );
