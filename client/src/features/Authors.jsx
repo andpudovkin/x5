@@ -28,8 +28,9 @@ function Authors() {
                                 <Table.HeaderCell>Books count</Table.HeaderCell> 
                             </Table.Row>
                         </Table.Header>
+                        <Table.Body>
                         {authors.map((author) => 
-                            <Table.Row>
+                            <Table.Row key={author.id}>
                                 <Table.Cell>
                                     <Link to={`/authors/${author.id}`}>
                                         {`${author.firstName} ${author.lastName}`}
@@ -38,6 +39,7 @@ function Authors() {
                                 <Table.Cell>{author.booksCount}</Table.Cell>
                             </Table.Row>
                         )}
+                        </Table.Body>
                     </Table>}
                 </Grid.Column>
             </Grid.Row>

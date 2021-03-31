@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { gql, useLazyQuery } from '@apollo/react-hooks';
 import { history } from '../App';
 import { Grid, Button, Input, Container, Form, Label } from 'semantic-ui-react';
 
 function LoginForm() {  
+
+    useEffect( () => {
+        if (loggined)
+            history.push('/');
+    } );
+
+    const [loggined, setLoggined] = useState(false);
 
     const LOGIN = gql`
         query login($login: String!, $password: String!) {
@@ -13,11 +20,13 @@ function LoginForm() {
             }
         }`;
 
-    const [doLogin, {loading, data, error}] = useLazyQuery(LOGIN);
+    const [doLogin, {data, error}] = useLazyQuery(LOGIN);
 
     if (data && data.login) {
-        localStorage.setItem('token', data.login.token);
-        history.push('/');
+        if (!loggined) {
+            localStorage.setItem('token', data.login.token);  
+            setLoggined(true); 
+        }   
     }
 
     const styles = {

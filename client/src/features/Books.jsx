@@ -30,8 +30,9 @@ function Books({authorId = null}) {
                                 <Table.HeaderCell>Author</Table.HeaderCell> 
                             </Table.Row>
                         </Table.Header>
+                        <Table.Body>
                         {books.map((book) => 
-                            <Table.Row>
+                            <Table.Row key={book.id}>
                                 <Table.Cell>
                                     <Link to={`/books/${book.id}`}>{book.title}</Link>
                                 </Table.Cell>
@@ -40,6 +41,7 @@ function Books({authorId = null}) {
                                 </Table.Cell>
                             </Table.Row>
                         )}
+                        </Table.Body>
                     </Table>}
                 </Grid.Column>
             </Grid.Row>
