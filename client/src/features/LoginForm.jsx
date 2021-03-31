@@ -31,9 +31,6 @@ function LoginForm() {
         backgroundColor: "white",
     }
 
-    if (error)
-        console.log(error);
-
     return (
         <div style={styles}>
             <Container style={{ marginTop: '10em' }}>

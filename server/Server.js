@@ -1,13 +1,9 @@
 const express = require('express');
+const bodyParser = require('body-parser')
 const graphqlHTTP = require('express-graphql');
 const cors = require('cors');
 const { buildSchema } = require('graphql');
 const { readFileSync } = require('fs');
-
-// ------------------------------------------------------
-// ------------------------------------------------------
-// ------------------------------------------------------
-// ------------------------------------------------------
 
 const schemaString = readFileSync('./schema.graphql', { encoding: 'utf8' });
 
@@ -104,13 +100,14 @@ const allBooks = [
 const TOKEN = "auth_token";
 const LOGIN = "Admin";
 const PASSWORD = "Admin";
+const WRONG_CREADENTIANLS = "Wrong user creadentials";
 
 const root = {
-	login: (args, request) => {	
+	login: (args) => {	
 		if (args.login === LOGIN && args.password === PASSWORD)
 			return {token:TOKEN, userName:'admin'};
 		else
-			return error({message: 'Unauthorized error', statusCode: 401});
+			return error(WRONG_CREADENTIANLS);
 	},
 	getAllBooks: ({authorId = null}) => {
 		if (!authorId) {
@@ -151,18 +148,33 @@ const root = {
 	}
 };
 
+const loggingMiddleware = (req, res, next) => {
+	if (req.body.operationName !== 'login')
+	{
+		const authToken = req.headers["authorization"];
+
+		if (!authToken || authToken === 'null')
+			return res.sendStatus(401);
+	}
+	next();
+  }
+
 const app = express();
 
-app.use(cors());
-
+var corsOptions = {
+	credentials: true
+  };
+app.use(cors(corsOptions));
+app.use(bodyParser.json());
+app.use(loggingMiddleware);
 app.use(
 	'/graphql',
 	graphqlHTTP({
 		schema: schema,
 		rootValue: root,
 		graphiql: true,
-		formatError: (err) => {
-			return ({message: err.message, statusCode: err.statusCode})
+		customFormatErrorFn: (err) => {
+			return ({ message: err.message, statusCode: err.statusCode });
 		}
 	})
 );
