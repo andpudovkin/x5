@@ -16,7 +16,6 @@ function LoginForm() {
     const [doLogin, {loading, data, error}] = useLazyQuery(LOGIN);
 
     if (data && data.login) {
-        console.log(data.login.token);
         localStorage.setItem('token', data.login.token);
         history.push('/');
     }
