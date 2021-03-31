@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Grid, Table } from 'semantic-ui-react';
 
-function Books() {
+function Books({authorId = null}) {
     const GET_ALL_BOOKS = gql`
         query {
             getAllBooks {
@@ -21,9 +21,6 @@ function Books() {
 
     return(
         <Grid>
-            <Grid.Row>
-                <Grid.Column><h3>Books page</h3></Grid.Column>
-            </Grid.Row>
             <Grid.Row>
                 <Grid.Column>
                     {!!books && <Table>

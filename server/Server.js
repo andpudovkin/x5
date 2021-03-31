@@ -17,11 +17,12 @@ const allBooks = [
 	{
 		id: '1',
 		title: 'Another awesome book',
-		description: '123',
+		description: 'Some description',
 		author: {
 			id: '1',
 			firstName: 'Alex',
-			lastName: 'Kislov'
+			lastName: 'Kislov',
+			bio: 'Very interesting biography!'
 		},
 		comments: [
 			{
@@ -33,6 +34,56 @@ const allBooks = [
 				id: '2',
 				author: 'Alex',
 				text: 'Really awesome book'
+			},
+			{
+				id: '3',
+				author: 'Vlad',
+				text: 'Like it'
+			},
+			{
+				id: '4',
+				author: 'Alexa',
+				text: 'Really awesome book'
+			},
+			{
+				id: '5',
+				author: 'Some guy',
+				text: 'Like it'
+			},
+			{
+				id: '6',
+				author: 'Julian the King',
+				text: 'Really awesome book'
+			},
+			{
+				id: '7',
+				author: 'Alisa',
+				text: 'Like it'
+			},
+			{
+				id: '8',
+				author: 'Siri',
+				text: 'Really awesome book'
+			},
+			{
+				id: '9',
+				author: 'Cortana',
+				text: 'Like it'
+			},
+			{
+				id: '10',
+				author: 'Illidan',
+				text: 'Really awesome book'
+			},
+			{
+				id: '11',
+				author: 'Artas',
+				text: 'Like it'
+			},
+			{
+				id: '12',
+				author: 'Ultramarine',
+				text: 'Really awesome book'
 			}
 		]
 	},
@@ -43,7 +94,8 @@ const allBooks = [
 		author: {
 			id: '1',
 			firstName: 'Alex',
-			lastName: 'Kislov'
+			lastName: 'Kislov',
+			bio: 'Very interesting biography!'
 		},
 		comments: []
 	}
@@ -60,16 +112,39 @@ const root = {
 		else
 			return error({message: 'Unauthorized error', statusCode: 401});
 	},
-	getAllBooks: () => {
-		return allBooks;
+	getAllBooks: ({authorId = null}) => {
+		if (!authorId) {
+			return allBooks;
+		}
+		return allBooks.filter((item) => item.author.id === authorId)
 	},
 	getAllAuthors: () => {
 		return allBooks
 			.map((item) => item.author)
 			.filter((item, i, self) => self.findIndex((selfItem) => selfItem.id === item.id) === i);
 	},
-	getBook: (params) => {
-		return allBooks.find((item) => item.id === params.id);
+	getBook: ({id}) => {
+		return allBooks.find((item) => item.id === id);
+	},
+	getAuthor: ({id}) => {
+		return allBooks.map((item) => item.author).find((item) => item.id === id);
+	},
+	getComments: ({entityId, limit, offset}) => {
+		const searchResult = allBooks.find((item) => item.id === entityId);
+		if (!searchResult) {
+			return [];
+		}
+
+		const {comments} = searchResult;
+
+		return { 
+			comments: comments.slice(offset, limit + offset),
+			pageInfo: {
+				totalCount: comments.length,
+				totalPages: Math.ceil(comments.length / limit),
+				currentPage: Math.ceil((offset + 1) / limit),
+			}
+		};
 	}
 };
 

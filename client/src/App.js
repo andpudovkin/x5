@@ -9,6 +9,7 @@ import React, { Fragment } from 'react';
 import {createBrowserHistory} from 'history';
 import NavBar from './layout/NavBar';
 import { Container } from 'semantic-ui-react';
+import AuthorCard from './features/AuthorCard';
 
 export const history = createBrowserHistory();
 
@@ -33,7 +34,8 @@ function App() {
             <Route path='/login' component={LoginForm} />
             <Route path='/books' exact component={Books} />
             <Route path='/books/:id' component={BookCard} />
-            <Route path='/authors' component={Authors} />
+            <Route path='/authors' exact component={Authors} />
+            <Route path='/authors/:id' component={AuthorCard} />
           </Switch>
         </Container>
       </Router >

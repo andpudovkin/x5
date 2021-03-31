@@ -1,11 +1,13 @@
 import { gql, useQuery } from '@apollo/react-hooks';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Grid, Table } from 'semantic-ui-react';
 
 function Authors() {
     const GET_ALL_AUTHORS = gql`
         query {
             getAllAuthors {
+                id
                 firstName,
                 lastName
             }
@@ -13,12 +15,9 @@ function Authors() {
     
     const { data } = useQuery(GET_ALL_AUTHORS);
     const authors = data?.getAllAuthors;
-    
+
     return(
         <Grid>
-            <Grid.Row>
-                <Grid.Column><h3>Authors page</h3></Grid.Column>
-            </Grid.Row>
             <Grid.Row>
                 <Grid.Column>
                     {!!authors && <Table>
@@ -31,7 +30,9 @@ function Authors() {
                         {authors.map((author) => 
                             <Table.Row>
                                 <Table.Cell>
-                                    {`${author.firstName} ${author.lastName}`}
+                                    <Link to={`/authors/${author.id}`}>
+                                        {`${author.firstName} ${author.lastName}`}
+                                    </Link>
                                 </Table.Cell>
                                 <Table.Cell>&nbsp;</Table.Cell>
                             </Table.Row>
