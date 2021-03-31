@@ -13,6 +13,7 @@ type Author {
     firstName: String!
     lastName: String!
     bio: String
+    booksCount: Int
 }
 
 type Book {

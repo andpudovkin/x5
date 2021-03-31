@@ -9,7 +9,8 @@ function Authors() {
             getAllAuthors {
                 id
                 firstName,
-                lastName
+                lastName,
+                booksCount
             }
         }`;
     
@@ -34,7 +35,7 @@ function Authors() {
                                         {`${author.firstName} ${author.lastName}`}
                                     </Link>
                                 </Table.Cell>
-                                <Table.Cell>&nbsp;</Table.Cell>
+                                <Table.Cell>{author.booksCount}</Table.Cell>
                             </Table.Row>
                         )}
                     </Table>}

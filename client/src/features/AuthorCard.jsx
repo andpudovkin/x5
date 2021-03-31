@@ -33,12 +33,11 @@ const AuthorCard = ({match: {params: {id}}}) => {
 
     return(
         <Container>
-            <Card style={{width: '100%'}}>
-                <Card.Content 
-                    header={`${firstName} ${lastName}`} 
-                    description={bio}
-                />
-            </Card>
+            <Card 
+                image='../../../../avatar.jpg'
+                header={`${firstName} ${lastName}`} 
+                description={bio}
+            />
             <Divider />
             <Books authorId={id} />
         </Container>

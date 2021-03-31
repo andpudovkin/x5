@@ -121,7 +121,10 @@ const root = {
 	getAllAuthors: () => {
 		return allBooks
 			.map((item) => item.author)
-			.filter((item, i, self) => self.findIndex((selfItem) => selfItem.id === item.id) === i);
+			.filter((item, i, self) => self.findIndex((selfItem) => selfItem.id === item.id) === i)
+			.map((author) => {
+				return { ...author, booksCount: allBooks.filter((book) => book.author.id === author.id).length }
+			});
 	},
 	getBook: ({id}) => {
 		return allBooks.find((item) => item.id === id);
